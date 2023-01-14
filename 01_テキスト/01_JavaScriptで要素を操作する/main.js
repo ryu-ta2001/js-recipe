@@ -25,6 +25,8 @@ elementClassName.className = "nice-element"
 // 要素を変更する - classList
 const elementClassList = document.getElementById("element-classList")
 elementClassList.classList.add("great-element")
+elementClassList.classList.add("nice-element")
+console.dir(elementClassList)
 
 // 要素を追加する - appendChild
 const elementAppendChild = document.getElementById("element-appendChild")
