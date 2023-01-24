@@ -1,8 +1,6 @@
 const quizText = document.getElementById("quiz-text")
 const quizImage = document.getElementById("quiz-image")
-const choice1 = document.getElementById("choice-1")
-const choice2 = document.getElementById("choice-2")
-const choice3 = document.getElementById("choice-3")
+const choicesContainer = document.getElementById("choices-container")
 const feedback = document.getElementById("feedback")
 
 // クイズの内容
@@ -34,29 +32,28 @@ const reloadQuiz = function () {
   // 画像表示
   quizImage.src = "./images/" + quiz.image
 
-  // 選択肢表示
-  choice1.textContent = quiz.choices[0].text
-  choice2.textContent = quiz.choices[1].text
-  choice3.textContent = quiz.choices[2].text
+  // ボタン作成
+  createChoice(quiz)
 }
 
-//
+// ボタン作成関数
+const createChoice = function (obj) {
+  const choice = []
+  for (let i = 0; i < obj.choices.length; i++) {
+    choice.push(document.createElement("button"))
+    choice[i].textContent = obj.choices[i].text
+    choicesContainer.append(choice[i])
+    choice[i].onclick = function () {
+      choose(i)
+    }
+
+    console.log(choice[i].textContent)
+  }
+}
+
 const choose = function (choiceNumber) {
   // フィードバック表示
   feedback.textContent = quiz.choices[choiceNumber].feedback
-}
-
-choice1.onclick = function () {
-  // 0 番目の選択肢を選択
-  choose(0)
-}
-choice2.onclick = function () {
-  // 1 番目の選択肢を選択
-  choose(1)
-}
-choice3.onclick = function () {
-  // 2 番目の選択肢を選択
-  choose(2)
 }
 
 reloadQuiz()
