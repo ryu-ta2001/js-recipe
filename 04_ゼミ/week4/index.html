@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CodeSandboxを作ってみよう！</title>
+    <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="tow-columns">
+    <div class="file-navigation">
+      <div class="file-navigation__buttons">
+        <h1 class="file-navigation__title-text">Files</h1>
+        <input
+          type="text"
+          class="file-navigation__new-file-input"
+          id="add-new-file-input"
+        />
+        <button
+          class="file-navigation__new-file-button"
+          id="add-new-file-button"
+        >
+          Make a new file
+        </button>
+      </div>
+      <nav>
+        <ul class="file-navigation__list" id="file-navigation-list"></ul>
+      </nav>
+    </div>
+    <main class="file-content">
+      <h1 class="file-content__now-editing-file" id="editing-file-title"></h1>
+      <textarea
+        class="file-content__input-field"
+        id="editing-file-content"
+      ></textarea>
+    </main>
+    <script>
+      let files = [
+        {
+          title: "index.html",
+          content: "index.htmlの内容です",
+        },
+        {
+          title: "package.json",
+          content: "package.jsonの内容です",
+        },
+        {
+          title: "sandbox.config.json",
+          content: "sandbox.config.jsonの内容です",
+        },
+        {
+          title: "style.css",
+          content: "style.cssの内容です",
+        },
+      ]
+
+      const fileNavigationList = document.getElementById("file-navigation-list")
+      const editingFileTitle = document.getElementById("editing-file-title")
+      const editingFileContent = document.getElementById("editing-file-content")
+      const addNewFileButton = document.getElementById("add-new-file-button")
+      const addNewFileInput = document.getElementById("add-new-file-input")
+      let nowFile = 0
+
+      addNewFileButton.onclick = function () {
+        // 新しいファイルを作成する処理
+        // ここでもさっきまで書いてたファイルの内容をfilesに反映させとく
+        files[nowFile].content = editingFileContent.value
+        // 現在のナビゲーションリスト全消ししちゃう
+        fileNavigationList.textContent = ""
+        // 新ファイルのオブジェクトをfilesに追加する
+        let newFile = {
+          title: addNewFileInput.value,
+          content: "",
+        }
+        files.push(newFile)
+        loadFiles()
+      }
+
+      const loadFiles = function () {
+        // filesを読み込む処理;
+        for (let i = 0; i < files.length; i++) {
+          const file = document.createElement("li")
+          file.className = "file-navigation__file"
+          file.textContent = files[i].title
+          fileNavigationList.append(file)
+          file.onclick = function () {
+            // nowFileをもとにfilesの内容を書き換える
+            fileNavigationList.children[nowFile].dataset.selected = false
+            files[nowFile].content = editingFileContent.value
+            editingFileTitle.textContent = files[i].title
+            editingFileContent.value = files[i].content
+            file.dataset.selected = true
+
+            nowFile = i
+          }
+        }
+        fileNavigationList.children[nowFile].dataset.selected = true
+        editingFileTitle.textContent = files[nowFile].title
+        editingFileContent.value = files[nowFile].content
+      }
+      loadFiles()
+    </script>
+  </body>
+</html>
